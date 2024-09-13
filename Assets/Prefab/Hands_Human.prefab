@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 2665232168586669310}
   - component: {fileID: 7166723553171834916}
   - component: {fileID: 356240584727132176}
-  - component: {fileID: 2721546277938311151}
   - component: {fileID: 4558708684429595843}
+  - component: {fileID: -4697735292642123988}
   m_Layer: 0
   m_Name: Hands_Human
   m_TagString: Hand
@@ -132,22 +132,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 0.3387729}
   m_EdgeRadius: 0
---- !u!114 &2721546277938311151
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8469946629256402541}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1463ea7d6759458469f3cf6b46c9bbda, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  minSpeed: 1
-  maxSpeed: 3
-  hasTomato: 0
-  freshTomatoPrefab: {fileID: 5706515694443064862, guid: 597c8744bd9d9af4c9841f382ae2f0f6, type: 3}
 --- !u!50 &4558708684429595843
 Rigidbody2D:
   serializedVersion: 4
@@ -175,3 +159,19 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 0
+--- !u!114 &-4697735292642123988
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8469946629256402541}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea6aa6b895f30004caa9a0208f6f2996, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  minSpeed: 1
+  maxSpeed: 3
+  hasTomato: 0
+  freshTomatoPrefab: {fileID: 5706515694443064862, guid: 597c8744bd9d9af4c9841f382ae2f0f6, type: 3}

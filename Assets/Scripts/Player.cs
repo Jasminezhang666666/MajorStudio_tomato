@@ -47,7 +47,6 @@ public class Player : MonoBehaviour
         currentRottenTomato = Instantiate(rottenTomatoPrefab);
         GrabbingTomato = true; // Set GrabbingTomato to true since we're grabbing a new tomato
         currentRottenTomato.GetComponent<RottenTomato>().StartFollowingMouse();
-        Debug.Log("Spawned a new RottenTomato and set it to follow the mouse.");
     }
 
     // Called by the RottenTomato when it collides with a hand
@@ -55,6 +54,5 @@ public class Player : MonoBehaviour
     {
         GrabbingTomato = false; // Reset GrabbingTomato to false once the tomato is attached to the hand
         currentRottenTomato = null; // Clear reference to the current tomato
-        Debug.Log("Stopped following the mouse. GrabbingTomato set to false.");
     }
 }

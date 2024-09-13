@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class HandManager : MonoBehaviour
 {
-    public GameObject handPrefab; // Prefab of the hand
+    public GameObject humanHandPrefab; // Prefab of the human hand
+    public GameObject alienHandPrefab; // Prefab of the alien hand
     public Transform spawnArea; // The area where hands will be spawned
     public float spawnRate = 1f; // Time between spawns
     public int maxHands = 5; // Maximum number of hands on screen
@@ -26,7 +27,7 @@ public class HandManager : MonoBehaviour
                 Vector3 spawnPosition = Vector3.zero; // Ensure spawnPosition is initialized
                 bool positionFound = false;
 
-                //Trying to find a valid spawn position
+                // Trying to find a valid spawn position
                 for (int attempts = 0; attempts < 10; attempts++)
                 {
                     spawnPosition = new Vector3(
@@ -42,9 +43,10 @@ public class HandManager : MonoBehaviour
                     }
                 }
 
-                // If a valid position is found, instantiate the hand
+                // If a valid position is found, instantiate a hand
                 if (positionFound)
                 {
+                    GameObject handPrefab = Random.Range(0f, 1f) < 0.5f ? humanHandPrefab : alienHandPrefab;
                     GameObject newHand = Instantiate(handPrefab, spawnPosition, Quaternion.identity);
                     newHand.GetComponent<Hand>().Initialize(this);
                     activeHands.Add(newHand);

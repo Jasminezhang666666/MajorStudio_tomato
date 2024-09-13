@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Hand : MonoBehaviour
 {
@@ -8,6 +9,7 @@ public class Hand : MonoBehaviour
     private bool movingDown = true; // Keeps track of movement direction
     private HandManager handManager;
     private bool hasTouchedTable = false;
+    private ScoreManager scoreManager;
 
     private Rigidbody2D rb;
 
@@ -20,6 +22,7 @@ public class Hand : MonoBehaviour
         speed = Random.Range(minSpeed, maxSpeed); // Assign random speed
         rb = GetComponent<Rigidbody2D>();
         rb.isKinematic = false; // Ensure it's not kinematic initially
+        scoreManager = FindObjectOfType<ScoreManager>();
     }
 
     void Update()
@@ -44,7 +47,7 @@ public class Hand : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    protected virtual void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Table"))
         {
