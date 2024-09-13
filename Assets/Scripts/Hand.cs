@@ -11,11 +11,15 @@ public class Hand : MonoBehaviour
 
     private Rigidbody2D rb;
 
+    public bool hasTomato = false; // Indicates if the hand is holding a tomato
+    public GameObject freshTomatoPrefab; // FreshTomato prefab to spawn when hand touches the table
+
     public void Initialize(HandManager manager)
     {
         handManager = manager;
         speed = Random.Range(minSpeed, maxSpeed); // Assign random speed
         rb = GetComponent<Rigidbody2D>();
+        rb.isKinematic = false; // Ensure it's not kinematic initially
     }
 
     void Update()
@@ -42,11 +46,37 @@ public class Hand : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-
         if (collision.CompareTag("Table"))
         {
             movingDown = false; // Start moving upwards after touching the table
-            hasTouchedTable = true; // the hand has touched the table
+            hasTouchedTable = true; // The hand has touched the table
+
+            // Ensure the Rigidbody2D is not kinematic when bouncing
+            rb.isKinematic = false;
+
+            if (!hasTomato)
+            {
+                // Spawn freshTomato as child when hand touches the table
+                GameObject freshTomato = Instantiate(freshTomatoPrefab, transform.position, Quaternion.identity);
+                freshTomato.transform.SetParent(transform);
+                freshTomato.transform.localPosition = new Vector3(0, -0.5f, 0); // Adjust position if necessary
+
+                hasTomato = true; // Hand now holds a tomato
+            }
+
         }
+    }
+
+    // Method to add a RottenTomato as a child if it doesn't have one
+    public bool AddTomato(GameObject tomato)
+    {
+        if (!hasTomato)
+        {
+            tomato.transform.SetParent(transform);
+            tomato.transform.localPosition = new Vector3(0, -0.5f, 0); // Adjust position as needed
+            hasTomato = true;
+            return true; // Successfully added the tomato
+        }
+        return false; // Tomato was not added because the hand already has one
     }
 }
