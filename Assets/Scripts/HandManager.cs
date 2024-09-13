@@ -26,7 +26,7 @@ public class HandManager : MonoBehaviour
                 Vector3 spawnPosition = Vector3.zero; // Ensure spawnPosition is initialized
                 bool positionFound = false;
 
-                // Attempt to find a valid spawn position
+                //Trying to find a valid spawn position
                 for (int attempts = 0; attempts < 10; attempts++)
                 {
                     spawnPosition = new Vector3(

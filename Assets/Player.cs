@@ -4,6 +4,7 @@ public class Player : MonoBehaviour
 {
     public GameObject rottenTomatoPrefab; // The RottenTomato prefab to spawn
     private GameObject currentRottenTomato; // The RottenTomato currently following the mouse
+    public bool GrabbingTomato { get; private set; } = false; // Boolean to track if a RottenTomato is following the mouse
 
     void Start()
     {
@@ -12,16 +13,16 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        HandleRottenTomatoMovement();
-        HandleRottenTomatoSpawning();
+        RottenTomatoMovement();
+        RottenTomatoSpawning();
     }
 
-    void HandleRottenTomatoMovement()
+    void RottenTomatoMovement()
     {
         if (currentRottenTomato != null)
         {
             Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            mousePosition.z = 0; // Make sure it's on the 2D plane
+            mousePosition.z = 0;
 
             // Check if the RottenTomato is still following the mouse
             if (currentRottenTomato.GetComponent<RottenTomato>().IsFollowingMouse)
@@ -31,13 +32,14 @@ public class Player : MonoBehaviour
         }
     }
 
-    void HandleRottenTomatoSpawning()
+    void RottenTomatoSpawning()
     {
         if (Input.GetMouseButtonDown(0)) // Left mouse button clicked
         {
             if (currentRottenTomato != null)
             {
                 Destroy(currentRottenTomato);
+                GrabbingTomato = false; // Update the boolean when the current RottenTomato is destroyed
             }
             SpawnRottenTomato();
         }
@@ -48,6 +50,7 @@ public class Player : MonoBehaviour
         currentRottenTomato = Instantiate(rottenTomatoPrefab);
         // Ensure the RottenTomato starts following the mouse
         currentRottenTomato.GetComponent<RottenTomato>().StartFollowingMouse();
+        GrabbingTomato = true; // Update the boolean when a new RottenTomato starts following the mouse
     }
 
     public void StopMouseFollowForTomato(RottenTomato tomato)
@@ -55,6 +58,7 @@ public class Player : MonoBehaviour
         if (currentRottenTomato == tomato)
         {
             currentRottenTomato = null; // Remove the reference to stop updating its position
+            GrabbingTomato = false; // Update the boolean when the RottenTomato stops following the mouse
         }
     }
 }

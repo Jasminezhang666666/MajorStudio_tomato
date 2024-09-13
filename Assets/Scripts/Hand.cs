@@ -7,25 +7,22 @@ public class Hand : MonoBehaviour
     private float speed;
     private bool movingDown = true; // Keeps track of movement direction
     private HandManager handManager;
-
-    private Rigidbody2D rb; // Rigidbody for physics-based movement
-
-    // Flag to track if the hand has touched the table
     private bool hasTouchedTable = false;
+
+    private Rigidbody2D rb;
 
     public void Initialize(HandManager manager)
     {
         handManager = manager;
         speed = Random.Range(minSpeed, maxSpeed); // Assign random speed
-        rb = GetComponent<Rigidbody2D>(); // Get Rigidbody2D component
+        rb = GetComponent<Rigidbody2D>();
     }
 
     void Update()
     {
-        // Update hand movement using Rigidbody2D velocity for physics-based movement
         if (movingDown)
         {
-            rb.velocity = new Vector2(0, -speed); // Move down
+            rb.velocity = new Vector2(0, -speed);
         }
         else
         {
@@ -49,17 +46,7 @@ public class Hand : MonoBehaviour
         if (collision.CompareTag("Table"))
         {
             movingDown = false; // Start moving upwards after touching the table
-            hasTouchedTable = true; // Mark that the hand has touched the table
-        }
-    }
-
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-
-        if (collision.gameObject.CompareTag("Table"))
-        {
-            movingDown = false; // Start moving upwards after touching the table
-            hasTouchedTable = true; // Mark that the hand has touched the table
+            hasTouchedTable = true; // the hand has touched the table
         }
     }
 }
