@@ -15,7 +15,11 @@ public class AlienHand : Hand
 
         if (collision.CompareTag("RottenTomato"))
         {
+            /*
             scoreManager.AddScore(5);
+            // Play good sound here
+            PlaySound(goodSound);
+            */
         }
     }
 }

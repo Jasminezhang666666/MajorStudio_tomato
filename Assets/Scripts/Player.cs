@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    public GameObject rottenTomatoPrefab; // The RottenTomato prefab to spawn
+    public GameObject rottenTomatoPrefab;
     private GameObject currentRottenTomato; // The RottenTomato currently following the mouse
     public bool GrabbingTomato = false; // Whether the player is currently grabbing a tomato
 
@@ -31,7 +31,7 @@ public class Player : MonoBehaviour
 
     void RottenTomatoSpawning()
     {
-        if (Input.GetMouseButtonDown(0)) // Left mouse button clicked
+        if (Input.GetMouseButtonDown(1) || Input.GetMouseButtonDown(0)) // RIGHT/LEFT mouse button clicked
         {
             // Only spawn a new RottenTomato if we're not already grabbing one
             if (!GrabbingTomato)
@@ -43,16 +43,16 @@ public class Player : MonoBehaviour
 
     void SpawnRottenTomato()
     {
-        // Spawn a new tomato and set it to follow the mouse
+        // new tomato, follow the mouse
         currentRottenTomato = Instantiate(rottenTomatoPrefab);
-        GrabbingTomato = true; // Set GrabbingTomato to true since we're grabbing a new tomato
+        GrabbingTomato = true; 
         currentRottenTomato.GetComponent<RottenTomato>().StartFollowingMouse();
     }
 
     // Called by the RottenTomato when it collides with a hand
     public void StopMouseFollow()
     {
-        GrabbingTomato = false; // Reset GrabbingTomato to false once the tomato is attached to the hand
-        currentRottenTomato = null; // Clear reference to the current tomato
+        GrabbingTomato = false; //the tomato is attached to the hand
+        currentRottenTomato = null;
     }
 }

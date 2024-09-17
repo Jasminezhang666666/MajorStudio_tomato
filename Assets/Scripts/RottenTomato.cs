@@ -4,7 +4,7 @@ public class RottenTomato : MonoBehaviour
 {
     private Rigidbody2D rb;
     private Collider2D col;
-    public bool IsFollowingMouse { get; private set; } = true;
+    public bool IsFollowingMouse { get; set; } = true;
 
     void Start()
     {

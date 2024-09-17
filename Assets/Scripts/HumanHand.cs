@@ -11,19 +11,17 @@ public class HumanHand : Hand
 
     protected override void OnTriggerEnter2D(Collider2D collision)
     {
-
         if (collision.CompareTag("RottenTomato"))
         {
-            Debug.Log("HumanHand hit a RottenTomato");
+            /*
+            // HumanHand hit a RottenTomato
             scoreManager.AddScore(-10);
-        }
 
-        if(!hasTomato)
-        {
-            scoreManager.AddScore(5);
+            // Play bad sound here
+            PlaySound(badSound);
+            */
         }
 
         base.OnTriggerEnter2D(collision);
     }
-
 }

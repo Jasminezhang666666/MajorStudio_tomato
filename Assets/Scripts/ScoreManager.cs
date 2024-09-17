@@ -3,7 +3,7 @@ using TMPro;
 
 public class ScoreManager : MonoBehaviour
 {
-    public TextMeshProUGUI scoreText; // UI TextMeshPro for score display
+    public TextMeshProUGUI scoreText;
     private int score = 0;
 
     void Start()

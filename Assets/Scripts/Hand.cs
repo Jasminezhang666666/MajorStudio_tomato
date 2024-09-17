@@ -1,28 +1,38 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class Hand : MonoBehaviour
 {
-    public float minSpeed = 1f; // Minimum speed for downward movement
-    public float maxSpeed = 3f; // Maximum speed for downward movement
+    public float minSpeed = 1f; // Min speed for downward movement
+    public float maxSpeed = 3f; // Max speed for downward movement
     private float speed;
-    private bool movingDown = true; // Keeps track of movement direction
+    private bool movingDown = true;
     private HandManager handManager;
     private bool hasTouchedTable = false;
     private ScoreManager scoreManager;
 
     private Rigidbody2D rb;
 
-    public bool hasTomato = false; // Indicates if the hand is holding a tomato
-    public GameObject freshTomatoPrefab; // FreshTomato prefab to spawn when hand touches the table
+    public bool hasTomato = false; // if the hand is holding a tomato
+    public GameObject freshTomatoPrefab;
+
+    // Audio references for good and bad sounds
+    public AudioClip goodSound;
+    public AudioClip badSound;
+    private AudioSource audioSource;
 
     public void Initialize(HandManager manager)
     {
         handManager = manager;
-        speed = Random.Range(minSpeed, maxSpeed); // Assign random speed
+        speed = Random.Range(minSpeed, maxSpeed);
         rb = GetComponent<Rigidbody2D>();
-        rb.isKinematic = false; // Ensure it's not kinematic initially
         scoreManager = FindObjectOfType<ScoreManager>();
+
+        // Get the AudioSource component
+        audioSource = GetComponent<AudioSource>();
+        if (audioSource == null)
+        {
+            audioSource = gameObject.AddComponent<AudioSource>(); // Add AudioSource if it doesn't exist
+        }
     }
 
     void Update()
@@ -31,9 +41,9 @@ public class Hand : MonoBehaviour
         {
             rb.velocity = new Vector2(0, -speed);
         }
-        else
+        else // move up
         {
-            rb.velocity = new Vector2(0, speed); // Move up
+            rb.velocity = new Vector2(0, speed);
         }
 
         // Destroy the hand after it has touched the table and moved off the top of the screen
@@ -54,19 +64,26 @@ public class Hand : MonoBehaviour
             movingDown = false; // Start moving upwards after touching the table
             hasTouchedTable = true; // The hand has touched the table
 
-            // Ensure the Rigidbody2D is not kinematic when bouncing
-            rb.isKinematic = false;
-
             if (!hasTomato)
             {
+                print("FRESHTOMATO ADDED");
+
                 // Spawn freshTomato as child when hand touches the table
                 GameObject freshTomato = Instantiate(freshTomatoPrefab, transform.position, Quaternion.identity);
                 freshTomato.transform.SetParent(transform);
-                freshTomato.transform.localPosition = new Vector3(0, -0.5f, 0); // Adjust position if necessary
+
+                // Adjust position based on whether the hand is Human or Alien
+                if (this is HumanHand)
+                {
+                    freshTomato.transform.localPosition = new Vector3(-0.5f, -2.5f, 0);
+                }
+                else if (this is AlienHand)
+                {
+                    freshTomato.transform.localPosition = new Vector3(0, -2.1f, 0);
+                }
 
                 hasTomato = true; // Hand now holds a tomato
             }
-
         }
     }
 
@@ -76,10 +93,42 @@ public class Hand : MonoBehaviour
         if (!hasTomato)
         {
             tomato.transform.SetParent(transform);
-            tomato.transform.localPosition = new Vector3(0, -0.5f, 0); // Adjust position as needed
+
+            // Adjust position based on whether the hand is Human or Alien
+            if (this is HumanHand)
+            {
+                tomato.transform.localPosition = new Vector3(-0.5f, -2.5f, 0);
+
+                // HumanHand hit a RottenTomato
+                scoreManager.AddScore(-10);
+
+                // Play bad sound here
+                PlaySound(badSound);
+            }
+            else if (this is AlienHand)
+            {
+                tomato.transform.localPosition = new Vector3(0, -2.1f, 0);
+
+                // AlienHand hit a RottenTomato
+                scoreManager.AddScore(5);
+                // Play good sound here
+                PlaySound(goodSound);
+            }
+
             hasTomato = true;
-            return true; // Successfully added the tomato
+            return true;
         }
+
+        print("HAS a TOMATO already");
         return false; // Tomato was not added because the hand already has one
+    }
+
+    // Method to play a sound
+    public void PlaySound(AudioClip clip)
+    {
+        if (audioSource != null && clip != null)
+        {
+            audioSource.PlayOneShot(clip);
+        }
     }
 }
